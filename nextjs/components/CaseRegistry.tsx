@@ -8,9 +8,6 @@ import {
   Clock,
   Sparkles,
   ArrowUpDown,
-  Paperclip,
-  CheckCircle,
-  AlertCircle,
   Filter,
   Layers,
   ChevronDown,
@@ -18,6 +15,7 @@ import {
   Calendar,
   User,
   ShieldAlert,
+  X,
 } from "lucide-react";
 
 interface CaseRegistryProps {
@@ -49,7 +47,7 @@ export default function CaseRegistry({
     "Research & Grants",
   ];
 
-  // Summary Metrics for Section 08
+  // Summary Metrics
   const totalCount = cases.length;
   const activeCount = cases.filter((c) => c.status === "open" || c.status === "new").length;
   const criticalCount = cases.filter((c) => c.priority === "critical").length;
@@ -95,329 +93,334 @@ export default function CaseRegistry({
     });
 
   return (
-    <div className="space-y-4">
-      {/* SECTION 08 TOP SUMMARY & TITLE */}
-      <div className="bg-white border border-[#E8EAF0] rounded-[8px] p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <h1 className="text-xl font-bold text-[#171923] tracking-tight">
-              Cross-Bureau Case Registry
-            </h1>
-            <span className="font-mono text-[10px] text-[#6246EA] bg-[#F3F0FF] px-2 py-0.5 rounded-[4px] border border-[#E8EAF0] font-semibold">
-              Statutory Docket
-            </span>
-          </div>
-          <p className="text-xs text-[#667085]">
-            Centralized intake docket across 7 AICTE bureaus with automated SLA timers and conflict surveillance.
-          </p>
-        </div>
-
-        <button
-          onClick={onOpenNewCaseModal}
-          className="px-3.5 py-2 rounded-[6px] text-xs font-semibold bg-[#6246EA] hover:bg-[#5338D6] text-white transition-colors flex items-center gap-1.5 shrink-0"
-        >
-          <Plus className="w-3.5 h-3.5" />
-          <span>Register New Case</span>
-        </button>
-      </div>
-
-      {/* Case Metrics Strip (Section 08 Directive) */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="bg-white border border-[#E8EAF0] rounded-[8px] p-3 flex justify-between items-center">
-          <div>
-            <span className="text-[10px] uppercase font-mono text-[#98A2B3]">Total Cases</span>
-            <div className="text-xl font-bold text-[#171923] font-mono tabular-nums">{totalCount}</div>
-          </div>
-          <Layers className="w-4 h-4 text-[#98A2B3]" />
-        </div>
-
-        <div className="bg-white border border-[#E8EAF0] rounded-[8px] p-3 flex justify-between items-center">
-          <div>
-            <span className="text-[10px] uppercase font-mono text-[#98A2B3]">Active Cases</span>
-            <div className="text-xl font-bold text-[#078B68] font-mono tabular-nums">{activeCount}</div>
-          </div>
-          <span className="w-2 h-2 rounded-full bg-[#078B68]" />
-        </div>
-
-        <div className="bg-white border border-[#E8EAF0] rounded-[8px] p-3 flex justify-between items-center">
-          <div>
-            <span className="text-[10px] uppercase font-mono text-[#98A2B3]">Critical SLA</span>
-            <div className="text-xl font-bold text-[#D93649] font-mono tabular-nums">{criticalCount}</div>
-          </div>
-          <span className="w-2 h-2 rounded-full bg-[#D93649]" />
-        </div>
-
-        <div className="bg-white border border-[#E8EAF0] rounded-[8px] p-3 flex justify-between items-center">
-          <div>
-            <span className="text-[10px] uppercase font-mono text-[#98A2B3]">Pending Action</span>
-            <div className="text-xl font-bold text-[#C88918] font-mono tabular-nums">{pendingCount}</div>
-          </div>
-          <span className="w-2 h-2 rounded-full bg-[#C88918]" />
-        </div>
-      </div>
-
-      {/* Filter and Search Bar */}
-      <div className="bg-white border border-[#E8EAF0] rounded-[8px] p-3 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-        {/* Search */}
-        <div className="relative flex-1">
-          <Search className="w-3.5 h-3.5 text-[#98A2B3] absolute left-2.5 top-2.5" />
-          <input
-            type="text"
-            placeholder="Search by case ID, institution, subject or officer..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-8 pr-3 py-1.5 bg-[#F7F8FA] border border-[#E8EAF0] rounded-[6px] text-xs text-[#171923] placeholder-[#98A2B3] focus:outline-none focus:border-[#6246EA] focus:bg-white transition-colors"
-          />
-        </div>
-
-        {/* Filters */}
-        <div className="flex flex-wrap items-center gap-2">
-          <select
-            value={selectedBureau}
-            onChange={(e) => setSelectedBureau(e.target.value)}
-            className="bg-[#F7F8FA] border border-[#E8EAF0] rounded-[6px] px-2.5 py-1.5 text-xs text-[#171923] focus:outline-none focus:border-[#6246EA]"
-          >
-            {bureaus.map((b) => (
-              <option key={b} value={b}>
-                Bureau: {b}
-              </option>
-            ))}
-          </select>
-
-          <select
-            value={selectedPriority}
-            onChange={(e) => setSelectedPriority(e.target.value)}
-            className="bg-[#F7F8FA] border border-[#E8EAF0] rounded-[6px] px-2.5 py-1.5 text-xs text-[#171923] focus:outline-none focus:border-[#6246EA]"
-          >
-            <option value="ALL">All Priorities</option>
-            <option value="critical">Critical</option>
-            <option value="high">High</option>
-            <option value="medium">Medium</option>
-            <option value="low">Low</option>
-          </select>
-
-          <select
-            value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
-            className="bg-[#F7F8FA] border border-[#E8EAF0] rounded-[6px] px-2.5 py-1.5 text-xs text-[#171923] focus:outline-none focus:border-[#6246EA]"
-          >
-            <option value="ALL">All Statuses</option>
-            <option value="new">New</option>
-            <option value="open">Open</option>
-            <option value="pending">Pending</option>
-            <option value="resolved">Resolved</option>
-          </select>
-
-          <span className="text-[11px] font-mono font-medium text-[#667085] px-2 tabular-nums">
-            {filteredCases.length} records
-          </span>
-        </div>
-      </div>
-
-      {/* MAIN HIGH-DENSITY TABLE (Section 08 Directive) */}
-      <div className="bg-white border border-[#E8EAF0] rounded-[8px] overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-[#F7F8FA] border-b border-[#E8EAF0] text-[10px] font-semibold text-[#667085] uppercase tracking-wider">
-              <tr>
-                <th
-                  onClick={() => handleSort("caseNumber")}
-                  className="py-2.5 px-3 cursor-pointer hover:text-[#171923] select-none"
-                >
-                  <div className="flex items-center gap-1">
-                    <span>Case ID</span>
-                    <ArrowUpDown className="w-3 h-3 text-[#98A2B3]" />
-                  </div>
-                </th>
-                <th className="py-2.5 px-3">Institution</th>
-                <th className="py-2.5 px-3">Bureau</th>
-                <th className="py-2.5 px-3">Subject</th>
-                <th
-                  onClick={() => handleSort("priority")}
-                  className="py-2.5 px-3 cursor-pointer hover:text-[#171923] select-none"
-                >
-                  <div className="flex items-center gap-1">
-                    <span>Priority</span>
-                    <ArrowUpDown className="w-3 h-3 text-[#98A2B3]" />
-                  </div>
-                </th>
-                <th className="py-2.5 px-3">Status</th>
-                <th className="py-2.5 px-3">Assigned Officer</th>
-                <th
-                  onClick={() => handleSort("dueDate")}
-                  className="py-2.5 px-3 cursor-pointer hover:text-[#171923] select-none"
-                >
-                  <div className="flex items-center gap-1">
-                    <span>SLA Deadline</span>
-                    <ArrowUpDown className="w-3 h-3 text-[#98A2B3]" />
-                  </div>
-                </th>
-                <th className="py-2.5 px-3 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#E8EAF0]">
-              {filteredCases.map((c) => (
-                <tr
-                  key={c.id}
-                  onClick={() => setSelectedCase(c)}
-                  className="hover:bg-[#F7F8FA] transition-colors cursor-pointer group"
-                >
-                  {/* 1. Case ID */}
-                  <td className="py-3 px-3">
-                    <span className="font-mono text-xs font-semibold text-[#6246EA] block group-hover:underline">
-                      {c.caseNumber}
-                    </span>
-                    {c.hasOverlapAlert && (
-                      <span className="inline-block mt-0.5 text-[9px] font-bold text-[#D93649] bg-[#FDF2F4] px-1 py-0.2 rounded border border-[#FAD2D8]">
-                        Collision Alert
+          <div className="space-y-6">
+            {/* Top Banner */}
+            <div className="bg-white border border-[#E8EAF0] rounded-xl card-shadow p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 mb-1">
+                    <h1 className="text-[26px] font-medium text-[#171923] tracking-tight leading-tight">
+                      Cross-Bureau Case Registry
+                    </h1>
+                      <span className="font-mono text-[11px] text-[#6246EA] bg-[#F3F0FF] px-2 py-0.5 rounded-md border border-[#E8EAF0] font-medium">
+                        Statutory Docket
                       </span>
+                    </div>
+                      <p className="text-[13px] text-[#667085] leading-relaxed">
+                        Centralized intake docket across 7 AICTE bureaus with automated SLA timers and conflict surveillance.
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={onOpenNewCaseModal}
+                      className="h-9 px-4 rounded-lg text-[13px] font-medium bg-[#6246EA] hover:bg-[#5338D6] text-white transition-colors flex items-center gap-2 shrink-0 shadow-xs"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>Register New Case</span>
+                    </button>
+                </div>
+
+                    {/* Case Metrics Strip */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                      <div className="bg-white border border-[#E8EAF0] rounded-xl card-shadow p-4 flex justify-between items-center">
+                        <div>
+                          <span className="text-[11px] font-medium uppercase text-[#667085] tracking-wide">Total Cases</span>
+                          <div className="text-[24px] font-semibold text-[#171923] font-mono tabular-nums mt-0.5">{totalCount}</div>
+                        </div>
+                        <div className="w-8 h-8 rounded-lg bg-[#F7F8FA] border border-[#E8EAF0] flex items-center justify-center text-[#667085]">
+                          <Layers className="w-4 h-4" />
+                        </div>
+                      </div>
+
+                        <div className="bg-white border border-[#E8EAF0] rounded-xl card-shadow p-4 flex justify-between items-center">
+                          <div>
+                            <span className="text-[11px] font-medium uppercase text-[#667085] tracking-wide">Active Cases</span>
+                            <div className="text-[24px] font-semibold text-[#078B68] font-mono tabular-nums mt-0.5">{activeCount}</div>
+                          </div>
+                          <div className="w-8 h-8 rounded-lg bg-[#E8F8F2] border border-[#D1F0E4] flex items-center justify-center text-[#078B68]">
+                            <span className="w-2.5 h-2.5 rounded-full bg-[#078B68]" />
+                          </div>
+                        </div>
+
+                          <div className="bg-white border border-[#E8EAF0] rounded-xl card-shadow p-4 flex justify-between items-center">
+                            <div>
+                              <span className="text-[11px] font-medium uppercase text-[#667085] tracking-wide">Critical SLA</span>
+                              <div className="text-[24px] font-semibold text-[#D93649] font-mono tabular-nums mt-0.5">{criticalCount}</div>
+                            </div>
+                            <div className="w-8 h-8 rounded-lg bg-[#FDF2F4] border border-[#FAD2D8] flex items-center justify-center text-[#D93649]">
+                              <span className="w-2.5 h-2.5 rounded-full bg-[#D93649]" />
+                            </div>
+                          </div>
+
+                            <div className="bg-white border border-[#E8EAF0] rounded-xl card-shadow p-4 flex justify-between items-center">
+                              <div>
+                                <span className="text-[11px] font-medium uppercase text-[#667085] tracking-wide">Pending Review</span>
+                                <div className="text-[24px] font-semibold text-[#C88918] font-mono tabular-nums mt-0.5">{pendingCount}</div>
+                              </div>
+                              <div className="w-8 h-8 rounded-lg bg-[#FCF8E8] border border-[#F6E8B6] flex items-center justify-center text-[#C88918]">
+                                <span className="w-2.5 h-2.5 rounded-full bg-[#C88918]" />
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Filter and Search Bar */}
+                              <div className="bg-white border border-[#E8EAF0] rounded-xl card-shadow p-3.5 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                                <div className="relative flex-1 max-w-sm">
+                                  <Search className="w-4 h-4 text-[#98A2B3] absolute left-3 top-2.5" />
+                                  <input
+                                    type="text"
+                                    placeholder="Search by ID, institution, subject, officer..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="w-full pl-9 pr-3 h-9 bg-[#F7F8FA] border border-[#E8EAF0] rounded-lg text-[13px] text-[#171923] placeholder-[#98A2B3] focus:outline-none focus:border-[#6246EA] focus:bg-white transition-colors"
+                                  />
+                                </div>
+
+                                <div className="flex flex-wrap items-center gap-2">
+                                  <select
+                                    value={selectedBureau}
+                                    onChange={(e) => setSelectedBureau(e.target.value)}
+                                    className="h-9 bg-[#F7F8FA] border border-[#E8EAF0] rounded-lg px-3 text-[13px] text-[#171923] focus:outline-none focus:border-[#6246EA] transition-colors"
+                                  >
+                                    {bureaus.map((b) => (
+                                      <option key={b} value={b}>
+                                        {b === "ALL" ? "All Bureaus" : b}
+                                      </option>
+                                    ))}
+                                  </select>
+
+                                  <select
+                                    value={selectedPriority}
+                                    onChange={(e) => setSelectedPriority(e.target.value)}
+                                    className="h-9 bg-[#F7F8FA] border border-[#E8EAF0] rounded-lg px-3 text-[13px] text-[#171923] focus:outline-none focus:border-[#6246EA] transition-colors"
+                                  >
+                                    <option value="ALL">All Priorities</option>
+                                    <option value="critical">Critical</option>
+                                    <option value="high">High</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="low">Low</option>
+                                  </select>
+
+                                  <select
+                                    value={selectedStatus}
+                                    onChange={(e) => setSelectedStatus(e.target.value)}
+                                    className="h-9 bg-[#F7F8FA] border border-[#E8EAF0] rounded-lg px-3 text-[13px] text-[#171923] focus:outline-none focus:border-[#6246EA] transition-colors"
+                                  >
+                                    <option value="ALL">All Statuses</option>
+                                    <option value="new">New</option>
+                                    <option value="open">Open</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="resolved">Resolved</option>
+                                  </select>
+
+                                    <span className="text-[12px] font-mono text-[#667085] px-2 tabular-nums">
+                                      {filteredCases.length} records
+                                    </span>
+                                </div>
+                              </div>
+
+                                {/* Main Table */}
+                                <div className="bg-white border border-[#E8EAF0] rounded-xl card-shadow overflow-hidden">
+                                  <div className="overflow-x-auto">
+                                        <table className="w-full text-left text-[13px]">
+                                          <thead className="bg-[#F7F8FA] border-b border-[#E8EAF0] text-[11px] font-medium text-[#667085] uppercase tracking-wider">
+                                            <tr>
+                                              <th
+                                                onClick={() => handleSort("caseNumber")}
+                                                className="py-3 px-4 cursor-pointer hover:text-[#171923] select-none font-medium"
+                                              >
+                                                  <div className="flex items-center gap-1.5">
+                                                    <span>Case ID</span>
+                                                    <ArrowUpDown className="w-3.5 h-3.5 text-[#98A2B3]" />
+                                                  </div>
+                                              </th>
+                                              <th className="py-3 px-4 font-medium">Institution</th>
+                                              <th className="py-3 px-4 font-medium">Bureau</th>
+                                              <th className="py-3 px-4 font-medium">Subject</th>
+                                              <th
+                                                onClick={() => handleSort("priority")}
+                                                className="py-3 px-4 cursor-pointer hover:text-[#171923] select-none font-medium"
+                                              >
+                                                  <div className="flex items-center gap-1.5">
+                                                    <span>Priority</span>
+                                                    <ArrowUpDown className="w-3.5 h-3.5 text-[#98A2B3]" />
+                                                  </div>
+                                              </th>
+                                              <th className="py-3 px-4 font-medium">Status</th>
+                                              <th className="py-3 px-4 font-medium">Assigned Officer</th>
+                                              <th
+                                                onClick={() => handleSort("dueDate")}
+                                                className="py-3 px-4 cursor-pointer hover:text-[#171923] select-none font-medium"
+                                              >
+                                                  <div className="flex items-center gap-1.5">
+                                                    <span>SLA Deadline</span>
+                                                    <ArrowUpDown className="w-3.5 h-3.5 text-[#98A2B3]" />
+                                                  </div>
+                                              </th>
+                                              <th className="py-3 px-4 text-right font-medium">Actions</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody className="divide-y divide-[#E8EAF0]">
+                                            {filteredCases.map((c) => (
+                                              <tr
+                                                key={c.id}
+                                                onClick={() => setSelectedCase(c)}
+                                                className="hover:bg-[#F7F8FA] transition-colors cursor-pointer group"
+                                              >
+                                                {/* 1. Case ID */}
+                                                    <td className="py-3.5 px-4">
+                                                      <span className="font-mono text-[13px] font-medium text-[#6246EA] block group-hover:underline">
+                                                        {c.caseNumber}
+                                                      </span>
+                                                      {c.hasOverlapAlert && (
+                                                          <span className="inline-block mt-1 text-[10px] font-medium text-[#D93649] bg-[#FDF2F4] px-1.5 py-0.5 rounded border border-[#FAD2D8]">
+                                                            Collision Alert
+                                                          </span>
                     )}
-                  </td>
+                                                        </td>
 
                   {/* 2. Institution */}
-                  <td className="py-3 px-3 font-medium text-[#171923] max-w-[190px]">
-                    <span className="block truncate text-xs">{c.institutionName}</span>
-                    <span className="text-[10px] text-[#98A2B3] font-mono">{c.category}</span>
-                  </td>
+                                                        <td className="py-3.5 px-4 font-normal text-[#171923] max-w-[200px]">
+                                                          <span className="block truncate text-[13px] font-medium">{c.institutionName}</span>
+                                                          <span className="text-[11px] text-[#98A2B3] font-mono">{c.category}</span>
+                                                        </td>
 
-                  {/* 3. Bureau */}
-                  <td className="py-3 px-3">
-                    <span className="text-[10px] font-medium text-[#171923] bg-[#F7F8FA] px-1.5 py-0.5 rounded border border-[#E8EAF0] whitespace-nowrap">
-                      {c.bureau}
-                    </span>
-                  </td>
+                                                        {/* 3. Bureau */}
+                                                            <td className="py-3.5 px-4">
+                                                              <span className="text-[11px] font-medium text-[#171923] bg-[#F7F8FA] px-2 py-0.5 rounded-md border border-[#E8EAF0] whitespace-nowrap">
+                                                                {c.bureau}
+                                                              </span>
+                                                            </td>
 
-                  {/* 4. Subject */}
-                  <td className="py-3 px-3 max-w-xs">
-                    <p className="text-xs font-medium text-[#171923] truncate">
-                      {c.subject}
-                    </p>
-                    <p className="text-[11px] text-[#667085] truncate mt-0.5">
-                      {c.description}
-                    </p>
-                  </td>
+                                                            {/* 4. Subject */}
+                                                                <td className="py-3.5 px-4 max-w-xs">
+                                                                  <p className="text-[13px] font-normal text-[#171923] truncate">
+                                                                    {c.subject}
+                                                                  </p>
+                                                                  <p className="text-[11px] text-[#667085] truncate mt-0.5">
+                                                                    {c.description}
+                                                                  </p>
+                                                                </td>
 
-                  {/* 5. Priority */}
-                  <td className="py-3 px-3">
-                    <span
-                      className={`text-[10px] font-semibold px-2 py-0.5 rounded ${
-                        c.priority === "critical"
-                          ? "bg-[#FDF2F4] text-[#D93649] border border-[#FAD2D8]"
-                          : c.priority === "high"
-                          ? "bg-[#FCF8E8] text-[#C88918] border border-[#E8EAF0]"
-                          : "bg-[#EBF3FC] text-[#3478C9] border border-[#E8EAF0]"
-                      }`}
-                    >
-                      {c.priority.toUpperCase()}
-                    </span>
-                  </td>
+                                                                {/* 5. Priority */}
+                                                                  <td className="py-3.5 px-4">
+                                                                    <span
+                                                                      className={`text-[11px] font-medium px-2 py-0.5 rounded-md border font-mono ${
+                                                                        c.priority === "critical"
+                                                                          ? "bg-[#FDF2F4] text-[#D93649] border border-[#FAD2D8]"
+                                                                          : c.priority === "high"
+                                                                              ? "bg-[#FCF8E8] text-[#C88918] border border-[#F6E8B6]"
+                                                                              : "bg-[#EBF3FC] text-[#3478C9] border border-[#D5E6F8]"
+                                                                      }`}
+                                                                    >
+                                                                      {c.priority.toUpperCase()}
+                                                                    </span>
+                                                                  </td>
 
                   {/* 6. Status */}
-                  <td className="py-3 px-3">
+                  <td className="py-3.5 px-4">
                     <span
-                      className={`text-[10px] font-medium px-2 py-0.5 rounded border ${
-                        c.status === "open"
-                          ? "bg-[#EBF3FC] text-[#3478C9] border-[#E8EAF0]"
-                          : c.status === "new"
-                          ? "bg-[#F3F0FF] text-[#6246EA] border-[#E8EAF0]"
-                          : "bg-[#E8F8F2] text-[#078B68] border-[#E8EAF0]"
-                      }`}
+                                                                      className = {`text-[11px] font-medium px-2 py-0.5 rounded-md border font-mono ${c.status === "open"
+                                                                            ? "bg-[#EBF3FC] text-[#3478C9] border-[#D5E6F8]"
+                                                                            : c.status === "new"
+                                                                              ? "bg-[#F3F0FF] text-[#6246EA] border-[#E8EAF0]"
+                                                                          : "bg-[#E8F8F2] text-[#078B68] border-[#D1F0E4]"
+                                                                        }`}
                     >
-                      {c.status.toUpperCase()}
-                    </span>
-                  </td>
+                                                                    {c.status.toUpperCase()}
+                                                                  </span>
+                                                                </td>
 
-                  {/* 7. Assigned Officer */}
-                  <td className="py-3 px-3 text-[11px]">
-                    <span className="font-medium text-[#171923] block">{c.ownerName}</span>
-                    <span className="text-[#98A2B3] text-[10px]">{c.ownerBureau}</span>
-                  </td>
+                                                                {/* 7. Assigned Officer */}
+                                                                  <td className="py-3.5 px-4 text-[12px]">
+                                                                    <span className="font-medium text-[#171923] block">{c.ownerName}</span>
+                                                                    <span className="text-[#98A2B3] text-[11px]">{c.ownerBureau}</span>
+                                                                  </td>
 
-                  {/* 8. SLA Deadline */}
-                  <td className="py-3 px-3 text-[11px] font-mono tabular-nums">
-                    <span className="text-[#171923] font-medium flex items-center gap-1">
-                      <Clock className="w-3 h-3 text-[#98A2B3]" />
-                      {c.dueDate}
-                    </span>
-                  </td>
+                                                                  {/* 8. SLA Deadline */}
+                                                                      <td className="py-3.5 px-4 text-[12px] font-mono tabular-nums">
+                                                                        <span className="text-[#171923] font-medium flex items-center gap-1.5">
+                                                                          <Clock className="w-3.5 h-3.5 text-[#98A2B3]" />
+                                                                          {c.dueDate}
+                                                                        </span>
+                                                                      </td>
 
-                  {/* 9. Actions */}
-                  <td className="py-3 px-3 text-right">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onOpenOverlapForCase(c);
-                      }}
-                      className="p-1.5 rounded hover:bg-[#F3F0FF] text-[#667085] hover:text-[#6246EA] transition-colors"
-                      title="Inspect Overlap Engine"
-                    >
-                      <Sparkles className="w-3.5 h-3.5" />
-                    </button>
-                  </td>
-                </tr>
+                                                                      {/* 9. Actions */}
+                                                                        <td className="py-3.5 px-4 text-right">
+                                                                          <button
+                                                                            onClick={(e) => {
+                                                                              e.stopPropagation();
+                                                                              onOpenOverlapForCase(c);
+                                                                            }}
+                                                                            className="p-1.5 rounded-lg hover:bg-[#F3F0FF] text-[#667085] hover:text-[#6246EA] transition-colors"
+                                                                            title="Inspect Overlap Engine"
+                                                                          >
+                                                                            <Sparkles className="w-4 h-4" />
+                                                                          </button>
+                                                                        </td>
+                                                                      </tr>
               ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+                                                                    </tbody>
+                                                                  </table>
+                                                                </div>
+                                                              </div>
 
-      {/* PROPER DETAILED CASE WORKSPACE MODAL (Section 08 Directive) */}
-      {selectedCase && (
-        <div className="fixed inset-0 bg-black/40 backdrop-blur-2xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white border border-[#E8EAF0] rounded-[8px] max-w-xl w-full p-5 shadow-lg space-y-4 animate-in fade-in zoom-in-95">
-            <div className="flex items-start justify-between pb-3 border-b border-[#E8EAF0]">
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs font-bold text-[#6246EA]">
-                    {selectedCase.caseNumber}
-                  </span>
-                  <span className="text-[10px] px-1.5 py-0.2 rounded bg-[#F7F8FA] border border-[#E8EAF0] text-[#667085]">
-                    {selectedCase.bureau}
-                  </span>
-                  <span
-                    className={`text-[10px] font-semibold px-2 py-0.2 rounded ${
-                      selectedCase.priority === "critical"
-                        ? "bg-[#FDF2F4] text-[#D93649]"
-                        : "bg-[#EBF3FC] text-[#3478C9]"
-                    }`}
-                  >
-                    {selectedCase.priority.toUpperCase()} SLA
-                  </span>
+                                                              {/* Case Details Modal */}
+                                                              {selectedCase && (
+                                                                <div className="fixed inset-0 bg-black/40 backdrop-blur-2xs z-50 flex items-center justify-center p-4">
+                                                                      <div className="bg-white border border-[#E8EAF0] rounded-xl max-w-xl w-full p-6 modal-shadow space-y-4 animate-in fade-in zoom-in-95">
+                                                                        <div className="flex items-start justify-between pb-3.5 border-b border-[#E8EAF0]">
+                                                                          <div>
+                                                                            <div className="flex items-center gap-2">
+                                                                                <span className="font-mono text-[13px] font-medium text-[#6246EA]">
+                                                                                  {selectedCase.caseNumber}
+                                                                                </span>
+                                                                                  <span className="text-[11px] px-2 py-0.5 rounded-md bg-[#F7F8FA] border border-[#E8EAF0] text-[#667085]">
+                                                                                    {selectedCase.bureau}
+                                                                                  </span>
+                                                                                  <span
+                                                                                    className={`text-[11px] font-medium px-2 py-0.5 rounded-md border font-mono ${
+                                                                                      selectedCase.priority === "critical"
+                                                                                        ? "bg-[#FDF2F4] text-[#D93649] border border-[#FAD2D8]"
+                                                                                        : "bg-[#EBF3FC] text-[#3478C9] border border-[#D5E6F8]"
+                                                                                    }`}
+                                                                                  >
+                                                                                    {selectedCase.priority.toUpperCase()} SLA
+                                                                                  </span>
                 </div>
-                <h3 className="text-sm font-bold text-[#171923] mt-1.5">
+                <h3 className="text-[16px] font-medium text-[#171923] mt-2 leading-snug">
                   {selectedCase.subject}
                 </h3>
               </div>
               <button
                 onClick={() => setSelectedCase(null)}
-                className="text-[#98A2B3] hover:text-[#171923]"
+                className="p-1 text-[#98A2B3] hover:text-[#171923] rounded-md transition-colors"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 text-xs">
-              <div className="p-3 bg-[#F7F8FA] rounded-[6px] border border-[#E8EAF0]">
-                <span className="text-[10px] uppercase font-mono text-[#98A2B3]">Institution</span>
-                <p className="font-semibold text-[#171923] mt-0.5">{selectedCase.institutionName}</p>
+            <div className="grid grid-cols-2 gap-3 text-[13px]">
+              <div className="p-3.5 bg-[#F7F8FA] rounded-lg border border-[#E8EAF0]">
+                <span className="text-[11px] uppercase font-mono text-[#667085] font-medium">Institution</span>
+                <p className="font-medium text-[#171923] mt-1">{selectedCase.institutionName}</p>
               </div>
-              <div className="p-3 bg-[#F7F8FA] rounded-[6px] border border-[#E8EAF0]">
-                <span className="text-[10px] uppercase font-mono text-[#98A2B3]">Assigned Officer</span>
-                <p className="font-semibold text-[#171923] mt-0.5">{selectedCase.ownerName}</p>
-                <span className="text-[10px] text-[#667085]">{selectedCase.ownerBureau}</span>
+              <div className="p-3.5 bg-[#F7F8FA] rounded-lg border border-[#E8EAF0]">
+                <span className="text-[11px] uppercase font-mono text-[#667085] font-medium">Assigned Officer</span>
+                <p className="font-medium text-[#171923] mt-1">{selectedCase.ownerName}</p>
+                <span className="text-[11px] text-[#667085]">{selectedCase.ownerBureau}</span>
               </div>
             </div>
 
-            <div className="text-xs">
-              <span className="font-semibold text-[#171923]">Statutory Matter & Findings:</span>
-              <p className="mt-1 p-3 bg-[#F7F8FA] rounded-[6px] border border-[#E8EAF0] text-[#171923] leading-relaxed">
+            <div className="text-[13px] space-y-1.5">
+              <span className="font-medium text-[#171923]">Statutory Matter & Findings:</span>
+              <p className="p-3.5 bg-[#F7F8FA] rounded-lg border border-[#E8EAF0] text-[#171923] leading-relaxed font-normal">
                 {selectedCase.description}
               </p>
             </div>
 
-            <div className="flex items-center justify-between pt-3 border-t border-[#E8EAF0] text-xs">
-              <span className="text-[#667085] font-mono text-[11px]">
-                Statutory Deadline: <strong className="text-[#C88918]">{selectedCase.dueDate}</strong>
+            <div className="flex items-center justify-between pt-3.5 border-t border-[#E8EAF0] text-[13px]">
+              <span className="text-[#667085] font-mono text-[12px]">
+                Statutory Deadline: <strong className="text-[#C88918] font-medium">{selectedCase.dueDate}</strong>
               </span>
               <div className="flex items-center gap-2">
                 <button
@@ -425,13 +428,13 @@ export default function CaseRegistry({
                     onOpenOverlapForCase(selectedCase);
                     setSelectedCase(null);
                   }}
-                  className="px-3 py-1.5 rounded-[6px] font-semibold bg-[#6246EA] text-white text-xs hover:bg-[#5338D6]"
+                  className="h-9 px-4 rounded-lg font-medium bg-[#6246EA] text-white text-[13px] hover:bg-[#5338D6] transition-colors shadow-xs"
                 >
                   Inspect Overlap Engine
                 </button>
                 <button
                   onClick={() => setSelectedCase(null)}
-                  className="px-3 py-1.5 rounded-[6px] font-medium bg-[#F7F8FA] text-[#667085] hover:text-[#171923] border border-[#E8EAF0]"
+                  className="h-9 px-3.5 rounded-lg font-medium bg-[#F7F8FA] text-[#667085] hover:text-[#171923] border border-[#E8EAF0] transition-colors"
                 >
                   Close
                 </button>

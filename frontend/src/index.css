@@ -1,3 +1,132 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'Geist';
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/npm/geist@1.0.0/fonts/Geist/GeistVF.woff2') format('woff2-variations');
+  }
+
+  @font-face {
+    font-family: 'Geist Mono';
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('https://cdn.jsdelivr.net/npm/geist@1.0.0/fonts/GeistMono/GeistMonoVF.woff2') format('woff2-variations');
+  }
+
+  :root {
+    --color-background: #FFFFFF;
+    --color-surface: #F7F8FA;
+    --color-text-primary: #171923;
+    --color-text-secondary: #667085;
+    --color-border: #E8EAF0;
+    --color-accent: #6246EA;
+  }
+
+  * {
+    @apply border-synapse-border;
+  }
+
+  html {
+    @apply antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  body {
+    @apply bg-synapse-background text-synapse-text-primary font-sans text-body;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    @apply bg-synapse-accent-light text-synapse-accent;
+  }
+
+  ::placeholder {
+    @apply text-synapse-text-muted;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+    box-shadow: 0 0 0 1000px white inset !important;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-radius-md px-4 py-2.5 text-body font-medium transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-synapse-accent focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .btn-primary {
+    @apply btn bg-synapse-accent text-white hover:bg-synapse-accent-hover active:bg-synapse-accent-hover/90 shadow-synapse-sm;
+  }
+
+  .btn-secondary {
+    @apply btn bg-synapse-surface text-synapse-text-primary border border-synapse-border hover:bg-synapse-surface-hover active:bg-synapse-border;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-synapse-text-secondary hover:bg-synapse-surface hover:text-synapse-text-primary active:bg-synapse-border;
+  }
+
+  .input {
+    @apply w-full rounded-radius-md border border-synapse-border bg-white px-3.5 py-2.5 text-body text-synapse-text-primary placeholder-synapse-text-muted transition-all duration-fast focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-synapse-accent focus-visible:ring-offset-0 focus-visible:border-synapse-accent disabled:bg-synapse-surface disabled:cursor-not-allowed disabled:opacity-60;
+    transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .input-error {
+    @apply border-synapse-error focus-visible:ring-synapse-error focus-visible:border-synapse-error;
+  }
+
+  .label {
+    @apply block text-body-sm font-medium text-synapse-text-primary mb-1.5;
+  }
+
+  .card {
+    @apply bg-white rounded-radius-lg border border-synapse-border shadow-synapse-md;
+  }
+
+  .card-elevated {
+    @apply bg-white rounded-radius-xl border border-synapse-border shadow-synapse-lg;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-slide-up {
+    animation: slideUp 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 200ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.96); }
+    to { opacity: 1; transform: scale(1); }
+  }
+}

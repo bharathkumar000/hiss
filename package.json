@@ -3,6 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cd nextjs && PORT=9090 npm run dev"
+    "dev": "cd nextjs && npm run dev"
   }
 }

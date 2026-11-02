@@ -19,47 +19,70 @@
 body {
   background-color: var(--bg-secondary);
   color: var(--text-primary);
-  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-geist-sans), var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
 }
 
 /* Tabular figures for data tables, metrics, case numbers */
-.tabular {
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum";
-}
 
-/* Swiss typography hairline border helpers */
-.hairline-b {
-  border-bottom: 1px solid var(--border-subtle);
-}
-.hairline-r {
-  border-right: 1px solid var(--border-subtle);
-}
-.hairline-t {
-  border-top: 1px solid var(--border-subtle);
-}
-.hairline-l {
-  border-left: 1px solid var(--border-subtle);
-}
-.hairline-all {
-  border: 1px solid var(--border-subtle);
-}
+  .tabular,
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
 
-/* Swiss precision scrollbar */
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: #d0d5dd;
-  border-radius: 2px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #98a2b3;
-}
+  /* Subtle enterprise shadows */
+  .card-shadow {
+    box-shadow: 0 1px 2px 0 rgba(16, 24, 40, 0.04);
+  }
+
+  .modal-shadow {
+    box-shadow: 0 12px 28px -4px rgba(16, 24, 40, 0.08), 0 4px 8px -2px rgba(16, 24, 40, 0.04);
+  }
+
+  .dropdown-shadow {
+    box-shadow: 0 4px 16px -2px rgba(16, 24, 40, 0.08);
+  }
+
+  /* Hairline border helpers */
+  .hairline-b {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .hairline-r {
+    border-right: 1px solid var(--border-subtle);
+  }
+
+  .hairline-t {
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .hairline-l {
+    border-left: 1px solid var(--border-subtle);
+  }
+
+  .hairline-all {
+    border: 1px solid var(--border-subtle);
+  }
+
+  /* High-precision scrollbar */
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #e2e4e9;
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #cbd0d8;
+  }
